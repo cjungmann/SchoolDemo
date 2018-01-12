@@ -1,0 +1,72 @@
+# -*- mode:sh -*-
+
+$database       : School
+$xml-stylesheet : default.xsl
+$default-mode   : main
+
+main
+   procedure : App_Main_Page
+   type      : table
+   buttons
+      button
+         type  : call
+         label : Students
+         task  : show_students
+      button
+         type  : call
+         label : Courses
+         task  : show_courses
+   result
+      name : students
+      schema : student
+      button
+         type : add
+         label : Add Student
+         task : ?add_student
+         key  : alt-plus alt-=
+      button
+         type  : jump
+         label : Import Students
+         url   : import_student.srm
+   result
+      name : courses
+      schema : course
+      button
+         type : add
+         label : Add Course
+         task : ?add_course
+         key  : alt-plus alt-=
+      button
+         type  : jump
+         label : Import Courses
+         url   : import_course.srm
+      
+add_student
+   type        : merge
+   schema-proc : App_Student_Add
+   form-action : ?add_student_submit
+   schema
+      merge-type : form-new
+      row-name   : student
+
+add_student_submit
+   procedure : App_Student_Add
+   result
+      type     : update
+      target   : students
+      row-name : student
+
+add_course
+   type     : merge
+   schema-proc : App_Course_Add
+   form-action : ?add_course_submit
+   schema
+      merge-type : form-new
+      row-name   : course
+
+add_course_submit
+   procedure : App_Course_Add
+   result
+      type     : update
+      target   : courses
+      row-name : course

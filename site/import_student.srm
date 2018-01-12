@@ -1,0 +1,43 @@
+# -*- mode:sh -*-
+
+$database : School
+$xml-stylesheet : default.xsl
+$default-mode : import
+$session-type : simple
+
+import
+   type : form-import
+   form-action : ?import_submit
+
+import_submit
+   type   : import
+   target : QT_Student
+   jump   : ?import_review
+
+student_import_submit_debug
+   type   : save-post
+   target : /tmp/saved_student_import.txt
+   
+
+import_review
+   type   : table
+   procedure : App_Student_Import_Review
+   button
+      type : jump
+      label : Accept
+      url   : ?accept
+   button
+      type  : jump
+      label : Abandon
+      url   : ?abandon
+
+accept
+   type : import-verdict
+   procedure : App_Student_Import_Accept
+   jump : main.srm
+
+abandon
+   type : import-verdict
+   procedure : App_Student_Import_Abandon
+   jump : main.srm   
+          
